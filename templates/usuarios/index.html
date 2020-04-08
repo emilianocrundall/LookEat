@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block header %}
+<div class="header">
+    <div class="logo">
+        <h4>Nombre</h4>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="cuerpo_index_user">
+    <div class="usuario_index">
+        <h3>{{ request.user.username }}</h3>
+        <p>Apartir de este momento podras comentar y calificar los restaurantes y sus opciones</p>
+            <div class="btns">
+                <a href="{% url 'resto:home' %}" class="btn_full">VOLVER</a>
+                <a href="{% url 'logout' %}" class="btn_full">SALIR</a>
+            </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>LookEat</title>
+</head>
+<body>
+    {% block header %}
+    <div class="header">
+        <div class="logo">
+            <h4><a href="{% url 'resto:home' %}">LookEat</a></h4>
+        </div>
+        <div class="botones">
+            {% if request.user.is_authenticated %}
+                <a class="perfil_link" href="{% url 'usuario:index' %}">{{ request.user.username }}</a>
+            {% else %}
+                <button data-toggle="modal" data-target="#modalSubscriptionForm">Registrarse</button>
+                <button data-toggle="modal" data-target="#modal_loginForm">Iniciar sesion</button>
+            {% endif %}
+        </div>
+    </div>
+    <div class="modal fade" id="modalSubscriptionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Registrarse</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form id="register_form">
+            {% csrf_token %}
+            <div class="modal-body mx-3">
+                <div class="md-form mb-4 mt-4">
+                    <input type="text" placeholder="Nombre de Usuario" name="username">
+                </div>
+                <div class="md-form mb-4">
+                    <input type="text" placeholder="Nombre" name="first_name">
+                </div>
+                <div class="md-form mb-4">
+                    <input type="text" placeholder="Apellido" name="last_name">
+                </div>
+                <div class="md-form mb-4">
+                    <input type="email" placeholder="Email" name="email">
+                </div>
+                <div class="md-form mb-4">
+                    <input type="password" placeholder="Contraseña" name="password">
+                </div>
+                <div class="md-form mb-4">
+                    <input type="password" placeholder="Confirmar contraseña" name="password2">
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button id="register_button" type="submit" class="btn_full">REGISTRARSE</button>
+                <div class="errores"></div>
+            </div>
+        </form>  
+        </div>
+    </div>
+    </div>
+    <div class="modal fade" id="modal_loginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Loguearse</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form id="login_form">
+            {% csrf_token %}
+            <div class="modal-body mx-3">
+                <div class="md-form mb-4 mt-4">
+                    <input type="text" placeholder="Nombre de Usuario" name="username">
+                </div>
+                <div class="md-form mb-4">
+                    <input type="password" placeholder="Contraseña" name="password">
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="submit" id="login_button" class="btn_full">LOGUEARSE</submit>
+            </div>
+            <div class="errores2"></div>
+        </form>  
+        </div>
+    </div>
+    </div>
+    <div class="modal fade" id="modal_manager" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Cuenta</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-4 mt-4 d-flex justify-content-center">
+                        <button class="btn_full" data-toggle="modal" data-target="#modal_loginForm_manager" id="iniciar">INICIA SESION</button>
+                    </div>
+                    <div class="md-form mb-4 d-flex justify-content-center">
+                        <a class="btn_full" href="{% url 'usuario:registrar_m_form' %}"> REGISTRARSE </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_loginForm_manager" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Ingresar como manager</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form id="login_form_manager">
+            {% csrf_token %}
+            <div class="modal-body mx-3">
+                <div class="md-form mb-4 mt-4">
+                    <input type="text" placeholder="Nombre de Usuario" name="username">
+                </div>
+                <div class="md-form mb-4">
+                    <input type="password" placeholder="Contraseña" name="password">
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="submit" id="login_button_manager" class="btn_full">LOGUEARSE</submit>
+            </div>
+            <div class="errores3"></div>
+        </form>  
+        </div>
+    </div>
+    </div>
+    {% endblock %}
+    {% block content %}
+    {% endblock %}
+    {% block footer %}
+
+    <div class="footer">
+        <h4>LookEat</h4>
+        <p>Todos los derechos reservados 2020</p>
+    </div>
+    {% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="{% static 'js/codigo.js' %}"></script>
+</body>
+</html>

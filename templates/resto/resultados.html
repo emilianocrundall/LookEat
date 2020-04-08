@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="busquedas_cont">
+    <div class="cont_1">
+        <h1>Resultados para tu busqueda</h1>
+        <div class="ordenado">
+            <form method="GET" action="{% url 'resto:ordenar_busqueda' %}">
+                <input type="hidden" name="filtrado2" id="filtrado2" value="{{ filtrar }}">
+                <input type="hidden" name="opciones2" id="opciones2" value="{{ opcion }}">
+                <p>Ordenar por:</p>
+                <button class="btn_full">Mejores Calificados</button>
+            </form>
+        </div>
+    </div>
+    <div class="cont_2">
+        {% if objetos %}
+            {% if resto %}
+                {% for objeto in objetos %}
+                    <div class="objeto_box2">
+                        <a href="{% url 'resto:resto_detalles' objeto.id %}">
+                            <img src={% if objeto.imagen_principal %}'{{ objeto.imagen_principal.url }}'{% endif %} alt="">
+                            <div class="datos">
+                                <p>{{ objeto.nombre }}</p>
+                                <p><i class="fas fa-star"></i> {{ objeto.average_rating }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+            {% for objeto in objetos %}
+                <div class="objeto_box2">
+                    <a href="{% url 'resto:plato_detalles' objeto.id %}">
+                        <img src={% if objeto.imagen %}'{{ objeto.imagen.url }}'{% endif %} alt="">
+                        <div class="datos">
+                            <p>{{ objeto.nombre }}</p>
+                            <p><i class="fas fa-star"></i> {{ objeto.average }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+            {% endif %}
+        {% else %}
+        <h2>No se encontraron resultados para tu busqueda</h2>
+        {% endif %}
+    </div>  
+</div>
+{% endblock %}

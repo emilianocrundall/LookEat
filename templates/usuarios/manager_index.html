@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block header %}
+<div class="header">
+    <div class="logo">
+        <h4>Nombre</h4>
+    </div>
+    <div class="botones">
+        <a href="{% url 'logout' %}" class="btn_full">SALIR</a>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+
+<a id="url" href="{% url 'resto:registrar_resto' %}" style="display: none;"></a>
+{% if manager.restaurante == null %}
+<div class="cuerpo_form_manager">
+    <div class="form_manager">
+        <form id="registrar_restaurante" enctype="multipart/form-data" novalidate="">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" class="form-control2" placeholder="Nombre" name="nombre">
+            </div>
+            <div class="form-group">
+                <textarea placeholder="Descripcion del Restaurante" class="form-control2" name="descripcion"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control2" placeholder="Direccion" name="direccion">
+            </div>
+            <div class="form-group">
+                <label for="" style="color:#d5b991">Hora de apertura</label>
+                <input type="time" class="form-control2" name="apertura">
+            </div>
+            <div class="form-group">
+                <label for="" style="color:#d5b991">Hora de cierre</label>
+                <input type="time" class="form-control2" name="cierre">
+            </div>
+            <div class="form-group">
+                <input class="form-control2" type="file" name="imagen"/>
+            </div>
+            <div class="form-group d-flex justify-content-center">
+                <button type="submit" class="btn_full" id="register_resto_button">Subir Restaurante</button>
+                <div class="errores5"></div>
+            </div>
+        </form>
+    </div>
+</div>
+{% elif no_imagen == True %}
+
+<div class="cuerpo_form_manager">
+    <div class="resto_nombre">
+        <h4>{{ manager.restaurante.nombre }}</h4>
+    </div>
+    <div class="form_manager">
+        <div class="form-group d-flex justify-content-center">
+            <h4 class="sub_generic">Ingresa 3 imagenes de tu restaurante</h4>
+        </div>
+        <form method="POST" action="{% url 'resto:subir_img' %}" id="subir_img_form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="file" id="upload_file" name="imagenes" class="form-control2" multiple>
+            </div>
+            <div class="form-group d-flex justify-content-center">
+                <button type="submit" class="btn_full" id="subir_img">Guardar Imagenes</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="cuerpo_resto_manager">
+    <div class="resto_nombre">
+        <h4>{{ manager.restaurante.nombre }}</h4>
+    </div>
+    <div class="imagenes">
+        <p>Imagenes de Tu Restaurante</p>
+        {% for img in imagen %}
+            <img style="width: 100px;height: 60px;" class="img" src={% if img.imagen %}'{{img.imagen.url}}'{% endif %}>
+        {% endfor %}
+    </div>
+    <div class="ag_comida">
+        <button id="ag_comida" data-toggle="modal" data-target="#modalcomidaform" class="btn_full">Agregar Comida al menu</button>
+    </div>
+    <div class="comidas_manager">
+        <p>Menu disponible</p>
+        <table class="table m-2">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Editar</th>
+                  </tr>
+            </thead>
+            <tbody>
+            {% for comida in restaurante.platos.all %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ comida.nombre }}</td>
+                <td>{{ comida.categoria }}</td>
+                <td>
+                    <a class="url_1 open-modal" data-url="{% url 'resto:editar_comida_form' comida.id %}"><i class="far fa-edit"></i></a>
+                    <button id="eliminar_comida" value="{{ comida.id }}" data-toggle="modal" data-target="#modaleliminarcomida"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-div"></div>
+<div class="modal fade" id="modalcomidaform" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Subir comida</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form id="comida" enctype="multipart/form-data" novalidate="">
+            {% csrf_token %}
+            <div class="modal-body mx-3">
+                <div class="md-form mb-4 mt-4">
+                    <input type="text" placeholder="Nombre" name="nombre">
+                </div>
+                <div class="md-form mb-4">
+                    <label for="" style="color: #d5b991;">Categoria </label>
+                    {% if categorias %}
+                        <select name="categoria">
+                        {% for fr_key in categorias %}
+                            <option value="{{fr_key.nombre}}">{{fr_key.nombre}}</option>
+                        {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="md-form mb-4">
+                    <label for="comment" style="color: #d5b991;">Descripcion</label>
+                    <textarea id="comment" name="texto" class="form-control2"></textarea>
+                </div>
+                <div class="md-form mb-4">
+                    <input id="id_docfile" type="file" name="docfile"/>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button id="guardar_comida" type="submit" class="btn_full">SUBIR COMIDA</button>
+                <div class="errores8"></div>
+            </div>
+        </form>  
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modaleliminarcomida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Eliminar plato</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form>
+            {% csrf_token %}
+            <div class="modal-body mx-3">
+                <div class="md-form mb-4 mt-4">
+                    <p style="color: #d5b991;">Estas seguro de que deseas eliminar este plato del menu?</p style="color: #d5b991;">
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button id="eliminar_comida_si" type="submit" class="btn_full">Si</button>
+                <button data-dismiss="modal" aria-label="Close" class="btn_full">No</button>
+            </div>
+        </form>  
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

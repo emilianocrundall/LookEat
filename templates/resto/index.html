@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+<a id="manager_index2" href="{% url 'usuario:index_manager' %}" style="display: none;"></a>
+
+<div class="cuerpo_buscador">
+    <div class="buscador">
+        <p>Buscar Platos, Lugares</p>
+        <form method="GET" action="{% url 'resto:busqueda' %}">
+            <input id="input_search" placeholder="Ingresa tu busqueda" class="input_search" name="filtrado" type="text">
+            <select name="opciones" class="input_search" id="opciones">
+                <option value="1">Comidas</option>
+                <option value="2">Lugares</option>
+            </select>
+            <button id="search" class="btn_buscar">Buscar</button>
+        </form>
+    </div>
+</div>
+<div class="restaurantes">
+    <h2>Restaurantes con mejor calificacion</h2>
+    <div class="objeto">
+        {% if not forloop.last %}
+        {% for restaurante in restaurantes %}
+            <div class="objeto_box">
+                <a href="{% url 'resto:resto_detalles' restaurante.id %}">
+                    <img src={% if restaurante.imagen_principal %}'{{ restaurante.imagen_principal.url }}'{% endif %} alt="">
+                    <p>{{ restaurante.nombre }}</p>
+                    <p><i class="fas fa-star"></i> {{ restaurante.average_rating }}</p>
+                </a>
+            </div> 
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<div class="comidas">
+    <h2>Platos con mejor calificacion</h2>
+    <div class="objeto">
+        {% if not forloop.last %}
+        {% for plato in platos %}
+            <div class="objeto_box">
+                <a href="{% url 'resto:plato_detalles' plato.id %}">
+                    <img src={% if plato.imagen %}'{{ plato.imagen.url }}'{% endif %} alt="">
+                    <p>{{ plato.nombre }}</p>
+                    <p><i class="fas fa-star"></i> {{ plato.average }}</p>
+                </a>
+            </div> 
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<div class="banner_manager">
+    {% if request.user.is_owner %}
+        <p>Ver Mi restaurante</p>
+        <div class="btn">
+            <a id="manager_index" href="{% url 'usuario:index_manager' %}" class="btn_banner">Ir ahora</a>
+        </div>
+    {% else %}
+        <p>Sube tu restaurante</p>
+        <div class="btn">
+            <button data-toggle="modal" data-target="#modal_manager" class="btn_banner">Ir ahora</button>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

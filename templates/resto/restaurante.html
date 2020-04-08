@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="banner_resto" >
+    <h2>{{ resto.nombre }}</h2>
+</div>
+<div class="cuerpo">
+    <div class="contenedor">
+        <h5>{{ resto.descripcion }}</h5>
+        <p class="direccion"><i class="fas fa-home"></i> {{ resto.direccion }}</p>
+        <p class="horarios"><i class="fas fa-clock"></i> {{ resto.apertura }} - {{ resto.cierre }}</p>
+        <p class="telefono"><i class="fas fa-phone"></i> {{ resto.telefono }} </p>
+        <p class="calificacion"><i class="fas fa-star"></i> {{ promedio.average_rating }}</p>
+        <div class="imagenes_resto">
+            {% if not forloop.last %}
+            {% for imagen in imagenes %}
+                <img src={% if imagen.imagen %}'{{ imagen.imagen.url }}'{% endif %} alt="">
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="contenedor2">
+        <h3>Menu</h3>
+        <div class="platos_disponibles">
+            {% if not forloop.last %}
+                {% for plato in resto.platos.all %}
+                    <a href="{% url 'resto:plato_detalles' plato.id %}">{{ plato.nombre }}</a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="comentarios">
+    {% if request.user.is_authenticated %}
+        <div class="comentar">
+            <h5>Dejar Comentario: </h5>
+            <form id="comentar">
+                <div class="form-group">
+                    <textarea name="texto" id="" cols="50" rows="6"></textarea>
+                </div>
+                <fieldset class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Excelente!">5 stars</label>
+                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Muy bueno">4 stars</label>
+                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Bueno">3 stars</label>
+                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Regular">2 stars</label>
+                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Malo">1 star</label>
+                    <input type="hidden" id="radio_value" name="rating_value"/>
+                </fieldset>
+                <div class="form-group">
+                    <button type="submit" value="{{ resto.id }}" id="subir_comentario" class="btn_full">Enviar</button>
+                </div>
+            </form>
+        <div class="errores10"></div>
+        </div>
+        {% else %}
+            <div class="comentar">
+                <p>Inicia sesion o registrate para dejar tu comentario</p>
+            </div>
+        {% endif %}
+    <div class="comentarios_gente">
+        <h2 class="promedio_cal">Calificacion promedio : <i class="fas fa-star"></i> {{ promedio.average_rating }}</h2>
+        <div class="comentario_propio">
+            <p class="comentario_user"></p>
+            <p class="comentario_user_texto"></p>
+            <p class="comentario_user_fecha"></p>
+        </div>
+        {% if comentarios %}
+            {% for comentario in comentarios %}
+                <div class="comentarios">
+                    <p class="comentario_user"><i class="fas fa-user"></i> {{ comentario.user }}</p>
+                    <p class="comentario_user_fecha">{{ comentario.fecha }}</p>
+                    <p class="comentario_user_calificacion">
+                        {% if comentario.calificacion == 1 %}
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        {% elif comentario.calificacion == 2 %}
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        {% elif comentario.calificacion == 3 %}
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        {% elif comentario.calificacion == 4 %}
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        {% elif comentario.calificacion == 5 %}
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        {% endif %}
+                    </p>
+                    <p class="comentario_user_texto">{{ comentario.texto }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

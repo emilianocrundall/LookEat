@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<a id="manager_index3" href="{% url 'usuario:index_manager' %}" style="display: none;"></a>
+<div class="cuerpo_form_manager">
+    <div class="titulo_form_manager">
+        <h4>Registrarse como manager</h4>
+    </div>
+    <div class="form_manager">
+        <form id="register_form_manager">
+            {% csrf_token %}
+            <div class="form-group mt-4">
+            <input type="text" class="form-control2" placeholder="Nombre de usuario" name="username">
+            </div>
+            <div class="form-group mb-4">
+                <input type="text" class="form-control2" placeholder="Nombre" name="first_name">
+            </div>
+            <div class="form-group mb-4">
+                <input type="text" class="form-control2" placeholder="Apellido" name="last_name">
+            </div>
+            <div class="form-group mb-4">
+                <input type="email" class="form-control2" placeholder="Email" name="email">
+            </div>
+            <div class="form-group mb-4">
+                <input type="password" class="form-control2" placeholder="Contraseña" name="password">
+            </div>
+            <div class="form-group mb-4">
+                <input type="password" class="form-control2" placeholder="Confirmar" name="password2">
+            </div>
+            <div class="form-group d-flex justify-content-center">
+                <button type="submit" class="btn_full" id="register_manager">Registrarse</button>
+                <div class="errores4"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
