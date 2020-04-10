@@ -2,7 +2,7 @@
 {% block header %}
 <div class="header">
     <div class="logo">
-        <h4>Nombre</h4>
+        <h4><a href="{% url 'resto:home' %}">LookEat</a></h4>
     </div>
     <div class="botones">
         <a href="{% url 'logout' %}" class="btn_full">SALIR</a>
@@ -25,6 +25,9 @@
             </div>
             <div class="form-group">
                 <input type="text" class="form-control2" placeholder="Direccion" name="direccion">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control2" placeholder="Telefono" name="telefono">
             </div>
             <div class="form-group">
                 <label for="" style="color:#d5b991">Hora de apertura</label>
