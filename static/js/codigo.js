@@ -1,14 +1,5 @@
 $(document).ready(function(){
 
-    $('#subir_img').attr('disabled',true);
-    $('#upload_file').on('keyup',function(){
-        if($(this).val().length !=0){
-            $('#subir_img').attr('disabled', false);
-        }else{
-            $('#subir_img').attr('disabled', true);
-        }
-    });
-
     $('#search').attr('disabled', true);
     $('#input_search').on('keyup',function(){
         if($(this).val().length !=0){
@@ -294,11 +285,36 @@ $(document).ready(function(){
           }
         });
     });
-    /* $('#search').on('click', function(){
-        var opciones = $('#opciones').val();
-        $('#opciones2').val(opciones);
-        var filtrado = $('#input_search').val();
-        $('#filtrado2').val(filtrado);
-    }); */
+    
+    $('#subir_img').on('click', function(e){
+        e.preventDefault();
+        var form = $('#subir_img_form').get(0);
+        var formData = new FormData(form);
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+            url: '/subirimg/',
+            type: 'POST',
+            headers: {
+                "X-CSRFToken": csrftoken
+            },
+            data: formData,
+            dataType: 'json',
+            success: function(respuesta){
+                if(respuesta.error){
+                    $('.errores').css({display: 'block'});
+                    $('.errores').html(respuesta.msj);
+                }
+                else if(respuesta.success){
+                    location.reload(true);
+                }
+            },
+            error: function(e){
+                console.log(e);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
     
 });
