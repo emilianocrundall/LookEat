@@ -18,32 +18,36 @@
 <div class="restaurantes">
     <h2>Restaurantes con mejor calificacion</h2>
     <div class="objeto">
-        {% if not forloop.last %}
-        {% for restaurante in restaurantes %}
-            <div class="objeto_box">
-                <a href="{% url 'resto:resto_detalles' restaurante.id %}">
-                    <img src={% if restaurante.imagen_principal %}'{{ restaurante.imagen_principal.url }}'{% endif %} alt="">
-                    <p>{{ restaurante.nombre }}</p>
-                    <p><i class="fas fa-star"></i> {{ restaurante.average_rating }}</p>
-                </a>
-            </div> 
-        {% endfor %}
+        {% if restaurantes %}
+            {% if not forloop.last %}
+            {% for restaurante in restaurantes %}
+                <div class="objeto_box">
+                    <a href="{% url 'resto:resto_detalles' restaurante.id %}">
+                        <img src={% if restaurante.imagen_principal %}'{{ restaurante.imagen_principal.url }}'{% endif %} alt="">
+                        <p>{{ restaurante.nombre }}</p>
+                        <p><i class="fas fa-star"></i> {{ restaurante.average_rating }}</p>
+                    </a>
+                </div> 
+            {% endfor %}
+            {% endif %}
         {% endif %}
     </div>
 </div>
 <div class="comidas">
     <h2>Platos con mejor calificacion</h2>
     <div class="objeto">
-        {% if not forloop.last %}
-        {% for plato in platos %}
-            <div class="objeto_box">
-                <a href="{% url 'resto:plato_detalles' plato.id %}">
-                    <img src={% if plato.imagen %}'{{ plato.imagen.url }}'{% endif %} alt="">
-                    <p>{{ plato.nombre }}</p>
-                    <p><i class="fas fa-star"></i> {{ plato.average }}</p>
-                </a>
-            </div> 
-        {% endfor %}
+        {% if platos %}
+            {% if not forloop.last %}
+            {% for plato in platos %}
+                <div class="objeto_box">
+                    <a href="{% url 'resto:plato_detalles' plato.id %}">
+                        <img src={% if plato.imagen %}'{{ plato.imagen.url }}'{% endif %} alt="">
+                        <p>{{ plato.nombre }}</p>
+                        <p><i class="fas fa-star"></i> {{ plato.average }}</p>
+                    </a>
+                </div> 
+            {% endfor %}
+            {% endif %}
         {% endif %}
     </div>
 </div>
