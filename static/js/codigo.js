@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+<<<<<<< HEAD
     /*$('#subir_img').attr('disabled',true);
     $('#upload_file').on('keyup',function(){
         if($(this).val().length !=0){
@@ -9,6 +10,8 @@ $(document).ready(function(){
         }
     });*/
 
+=======
+>>>>>>> b8d0367f1526d38c8b39339dd003955deb5b863d
     $('#search').attr('disabled', true);
     $('#input_search').on('keyup',function(){
         if($(this).val().length !=0){
@@ -294,6 +297,10 @@ $(document).ready(function(){
           }
         });
     });
+<<<<<<< HEAD
+=======
+    
+>>>>>>> b8d0367f1526d38c8b39339dd003955deb5b863d
     $('#subir_img').on('click', function(e){
         e.preventDefault();
         var form = $('#subir_img_form').get(0);

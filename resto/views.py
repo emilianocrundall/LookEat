@@ -30,8 +30,13 @@ def registrar_resto(request):
                 nombre=nombre_,
                 descripcion=descripcion_,
                 direccion=direccion_,
+<<<<<<< HEAD
                 telefono=telefono_,
                 imagen_principal=imagen_,
+=======
+                imagen_principal=imagen_,
+                telefono=telefono_,
+>>>>>>> b8d0367f1526d38c8b39339dd003955deb5b863d
                 apertura=apertura_,
                 cierre=cierre_
             )
