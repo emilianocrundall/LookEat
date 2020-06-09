@@ -20,12 +20,21 @@ def registrar_resto(request):
         nombre_ = request.POST.get('nombre')
         descripcion_ = request.POST.get('descripcion')
         direccion_ = request.POST.get('direccion')
+        telefono_ = request.POST.get('telefono')
         apertura_ = request.POST.get('apertura')
         cierre_ = request.POST.get('cierre')
         imagen_ = request.FILES.get('imagen')
 
         if nombre_ and descripcion_ and direccion_ and apertura_ and cierre_ and imagen_:
-            resto = Restaurante.objects.create(nombre=nombre_, descripcion=descripcion_, direccion=direccion_, imagen_principal=imagen_, apertura=apertura_, cierre=cierre_)
+            resto = Restaurante.objects.create(
+                nombre=nombre_,
+                descripcion=descripcion_,
+                direccion=direccion_,
+                telefono=telefono_,
+                imagen_principal=imagen_,
+                apertura=apertura_,
+                cierre=cierre_
+            )
             resto.save()
             try:
                 manager = Manager.objects.get(user_id=request.user.id)
@@ -40,17 +49,22 @@ def registrar_resto(request):
 
 
 def subir_img(request):
-    imagenes = request.FILES.getlist('imagenes')
-    if imagenes:
-        try:
-            manager = Manager.objects.get(user_id=request.user.id)
-            restaurante_ = Restaurante.objects.get(id=manager.restaurante_id)
-            for file_ in imagenes:
-                resto_imagenes = Imagen.objects.create(restaurante=restaurante_, imagen=file_)
-                resto_imagenes.save()
-        except Manager.DoesNotExist:
-            raise Http404('Cuenta de manager inexistente')
-    return redirect('usuario:index_manager')
+    salida = {}
+    if request.method == 'POST' and request.is_ajax():
+        imagenes = request.FILES.getlist('imagenes')
+        if imagenes:
+            try:
+                manager = Manager.objects.get(user_id=request.user.id)
+                restaurante_ = Restaurante.objects.get(id=manager.restaurante_id)
+                for file_ in imagenes:
+                    resto_imagenes = Imagen.objects.create(restaurante=restaurante_, imagen=file_)
+                    resto_imagenes.save()
+                    salida = {'success': True, 'msj': 'Imagenes cargadas'}
+            except Manager.DoesNotExist:
+                salida = {'error': True, 'msj': 'Error al conectar con tu cuenta de manager'}
+        else:
+            salida = {'error': True, 'msj': 'Por favor ingresa las imagenes'}
+    return HttpResponse(JsonResponse(salida))
 
 
 def subir_comida(request):

@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'restaurante_data',
         'USER': 'emiliano',
-        'PASSWORD': 'watchitburnpass',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432'
     }

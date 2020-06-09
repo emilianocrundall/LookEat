@@ -27,6 +27,9 @@
                 <input type="text" class="form-control2" placeholder="Direccion" name="direccion">
             </div>
             <div class="form-group">
+                <input type="text" class="form-control2" placeholder="Telefono" name="telefono">
+            </div>
+            <div class="form-group">
                 <label for="" style="color:#d5b991">Hora de apertura</label>
                 <input type="time" class="form-control2" name="apertura">
             </div>
@@ -54,13 +57,14 @@
         <div class="form-group d-flex justify-content-center">
             <h4 class="sub_generic">Ingresa 3 imagenes de tu restaurante</h4>
         </div>
-        <form method="POST" action="{% url 'resto:subir_img' %}" id="subir_img_form" enctype="multipart/form-data">
+        <form id="subir_img_form" enctype="multipart/form-data" novalidate="">
             {% csrf_token %}
             <div class="form-group">
                 <input type="file" id="upload_file" name="imagenes" class="form-control2" multiple>
             </div>
             <div class="form-group d-flex justify-content-center">
                 <button type="submit" class="btn_full" id="subir_img">Guardar Imagenes</button>
+                <div class="errores"></div>
             </div>
         </form>
     </div>
